@@ -1,0 +1,1 @@
+{'total_events': 8, 'dns_matches': 2, 'url_matches': 1, 'context_ip_matches': 2, 'correlated_hosts': {'PC-01': ['context_ip', 'domain', 'url']}, 'note': 'Offline Python validation of synthetic data; not a Splunk execution.'}

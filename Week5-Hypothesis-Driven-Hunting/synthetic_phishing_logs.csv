@@ -1,0 +1,9 @@
+_time,host,event_type,domain,url,dest_ip,dest_port
+2026-10-10T07:00:00Z,PC-01,dns,login-outlook365.yzz.me,,,
+2026-10-10T07:01:00Z,PC-01,proxy,login-outlook365.yzz.me,http://login-outlook365.yzz.me/,,
+2026-10-10T07:02:00Z,PC-01,firewall,,,77.72.1.44,443
+2026-10-10T07:03:00Z,PC-02,dns,example.org,,,
+2026-10-10T07:04:00Z,PC-02,proxy,example.org,https://example.org/,,
+2026-10-10T07:05:00Z,PC-03,firewall,,,77.72.1.44,443
+2026-10-10T07:06:00Z,PC-04,dns,login-outlook365.yzz.me,,,
+2026-10-10T07:07:00Z,PC-05,dns,example.com,,,

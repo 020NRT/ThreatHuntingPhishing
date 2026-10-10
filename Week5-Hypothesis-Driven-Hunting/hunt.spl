@@ -1,0 +1,19 @@
+# 1: Exact phishing domain matches
+index=phishing_lab sourcetype=phishing:csv event_type=dns domain="login-outlook365.yzz.me"
+| table _time host domain
+
+# 2: Exact phishing URL matches
+index=phishing_lab sourcetype=phishing:csv event_type=proxy url="http://login-outlook365.yzz.me/"
+| table _time host url
+
+# 3: Related infrastructure (context only; not automatically malicious)
+index=phishing_lab sourcetype=phishing:csv event_type=firewall dest_ip="77.72.1.44"
+| table _time host dest_ip dest_port
+
+# 4: Correlate observed events by host
+index=phishing_lab sourcetype=phishing:csv
+| eval indicator=case(domain="login-outlook365.yzz.me","domain",url="http://login-outlook365.yzz.me/","url",dest_ip="77.72.1.44","context_ip",true(),null())
+| where isnotnull(indicator)
+| stats count AS events values(indicator) AS indicators dc(indicator) AS distinct_types by host
+| where distinct_types>=2
+| sort - distinct_types
