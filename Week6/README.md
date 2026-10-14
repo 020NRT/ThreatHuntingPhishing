@@ -72,3 +72,13 @@ In this lab, I studied MITRE ATT&CK technique T1059.001 and simulated PowerShell
 
 ## Limitations and Next Steps
 The evidence confirms one child process and its PowerShell parent. A separate Sysmon event for the initial PowerShell process was not captured in the submitted screenshots. In Week 7, a CAR analytic should be selected and implemented in a SIEM using real imported events; this has not yet been done.
+
+## AI Usage Disclosure
+
+I used ChatGPT as a learning assistant during this laboratory work.
+
+ChatGPT helped me with step-by-step instructions, including how to install and configure Sysmon, where to find process creation events in Windows Event Viewer, and how to identify important information such as Event ID, ParentImage, and ParentCommandLine.
+
+I also used AI to better understand MITRE ATT&CK technique T1059.001 and to organize my findings in the GitHub report.
+
+All PowerShell commands were executed by me on my Windows 11 computer. I collected the Sysmon logs and took the screenshots myself. AI was used for guidance, explanations, and report formatting.
