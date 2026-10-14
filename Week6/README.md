@@ -56,6 +56,16 @@ Reference: https://attack.mitre.org/techniques/T1059/001/
 ### Parent process and command line
 ![Parent process](parent-process.png)
 
+## MITRE ATT&CK Mapping
+
+| Category | Description |
+|---|---|
+| Tactic | Execution (TA0002) |
+| Technique | Command and Scripting Interpreter (T1059) |
+| Sub-technique | PowerShell (T1059.001) |
+| Data Source | Sysmon Event ID 1 |
+| Observed Activity | PowerShell launched whoami.exe |
+| Result | Successful simulation |
 
 ## Conclusion
 In this lab, I studied MITRE ATT&CK technique T1059.001 and simulated PowerShell command execution on Windows. I used Sysmon and Event Viewer to check the activity. Sysmon Event ID 1 showed that PowerShell started the `whoami.exe` process. This helped me understand how process logs can support threat detection. The commands were safe test commands, not a real cyberattack.
