@@ -28,7 +28,8 @@ The output showed that the log was enabled (`IsEnabled: True`) and contained **3
 
 ### Screenshot 1 — PowerShell verification
 
-![PowerShell showing both running services and 3,919 Sysmon records](screenshots/powershell_verification.png)
+<img width="1919" height="1078" alt="Изображение ChatGPT 21 окт  2026 г , 17_26_27" src="https://github.com/user-attachments/assets/812de4d2-3740-45fc-bab4-2fd71abd0c94" />
+
 
 I then opened Splunk Enterprise and ran this search:
 
