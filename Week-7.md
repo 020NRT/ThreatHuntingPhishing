@@ -41,7 +41,8 @@ The time range was set to **All time**, but the search returned **0 events**. Ea
 
 ### Screenshot 2 — Splunk search result
 
-![Splunk Enterprise showing zero results for the Sysmon event search](screenshots/splunk_search.png)
+<img width="1919" height="930" alt="Изображение ChatGPT 21 окт  2026 г , 17_25_45" src="https://github.com/user-attachments/assets/ab16e9b6-bc53-46dc-8352-744f8f8f8153" />
+
 
 ## 3. Results
 
