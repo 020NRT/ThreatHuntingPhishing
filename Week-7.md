@@ -55,7 +55,7 @@ This confirmed that Splunk could read and search my uploaded CSV logs.
 
 ### Screenshot — 120 Events in Splunk
 
-[View Splunk Screenshot](https://github.com/020NRT/ThreatHuntingPhishing/blob/main/screenshots/week7-splunk-success.png)
+![120 Events in Splunk](screenshots/week7-splunk-success.png)
 
 ## 4. CAR Detection and SPL Search
 
