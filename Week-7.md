@@ -49,7 +49,8 @@ This shows that Splunk can read my uploaded CSV file. It does not show that Splu
 
 ### Screenshot: 120 Events in Splunk
 
-![Uploading week7-splunk-success.png…]()
+![Uploading Изображение ChatGPT 22 окт. 2026 г., 16_52_36.png…]()
+
 
 
 ## 4. CAR Detection Idea
