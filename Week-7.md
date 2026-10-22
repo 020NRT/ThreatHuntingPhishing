@@ -1,69 +1,96 @@
-# Sysmon and Splunk Enterprise — Practical Lab Report
+# Week 7 — Sysmon Logs, Splunk, CAR and MITRE ATT&CK
 
-**Date:** 21 October 2026  
-**Environment:** Windows 11, Sysmon64, Splunk Enterprise  
-**Result:** Partially completed
+**Date:** 22 October 2026  
+**Tools:** Windows 11, Sysmon, Splunk Enterprise  
+**Result:** I uploaded a CSV file to Splunk and found **120 events**.
 
-## 1. Objective
+## 1. Goal
 
-The goal of this practical task was to check Sysmon event logging and try to collect Sysmon events in Splunk Enterprise for security monitoring.
+The goal of this lab was to check Windows security logs, view them in Splunk, choose a CAR detection idea, and connect it to MITRE ATT&CK techniques.
 
-## 2. Practical Work
+## 2. Checking Sysmon
 
-I used Windows PowerShell as Administrator to check the status of the Sysmon and Splunk services:
+First, I checked the Splunk and Sysmon services in Windows PowerShell:
 
 ```powershell
 Get-Service Splunkd, Sysmon64
 ```
 
-Both services showed the status **Running**.
-
-Next, I checked the Sysmon Operational event log:
+Both services were running. Then I checked the Sysmon log:
 
 ```powershell
 Get-WinEvent -ListLog "Microsoft-Windows-Sysmon/Operational" | Select-Object LogName, RecordCount, IsEnabled
 ```
 
-The output showed that the log was enabled (`IsEnabled: True`) and contained **3,919 records**. This confirmed that Sysmon was recording events locally.
+The log was enabled and had **3,919 records** during my earlier check.
 
-### Screenshot 1 — PowerShell verification
+At first, Splunk showed **0 events** when I tried to search the Windows Sysmon log directly. I also found an access error (`errorCode=5`). I did not confirm that this problem was fixed.
 
-<img width="1919" height="1078" alt="Изображение ChatGPT 21 окт  2026 г , 17_26_27" src="https://github.com/user-attachments/assets/812de4d2-3740-45fc-bab4-2fd71abd0c94" />
+## 3. Uploading Logs to Splunk
 
-
-I then opened Splunk Enterprise and ran this search:
+Next, I uploaded the sample file `week7_windows_sysmon_sample.csv` to Splunk Enterprise. I opened **Search & Reporting**, selected **All time**, and used this search:
 
 ```spl
-index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
-| stats count by sourcetype
+source="week7_windows_sysmon_sample.csv" sourcetype="csv"
 ```
 
-The time range was set to **All time**, but the search returned **0 events**. Earlier troubleshooting also showed Windows Event Log subscription errors (`errorCode=5`, access denied). Therefore, the screenshots do not confirm successful collection of Sysmon events by Splunk.
+**Splunk showed 120 events.** I could see these types of events:
 
-### Screenshot 2 — Splunk search result
+| Event ID | Meaning |
+| --- | --- |
+| 1 | A new process started |
+| 3 | A network connection was made |
+| 11 | A file was created |
+| 22 | A DNS request was made |
 
-<img width="1919" height="930" alt="Изображение ChatGPT 21 окт  2026 г , 17_25_45" src="https://github.com/user-attachments/assets/ab16e9b6-bc53-46dc-8352-744f8f8f8153" />
+Some events showed programs such as `cmd.exe`, `powershell.exe`, `chrome.exe`, and `notepad.exe`.
+
+This shows that Splunk can read my uploaded CSV file. It does not show that Splunk is receiving live Sysmon logs from Windows.
+
+### Screenshot: 120 Events in Splunk
+
+![Uploading week7-splunk-success.png…]()
 
 
-## 3. Results
+## 4. CAR Detection Idea
 
-| Check | Observed result |
-|---|---|
-| Splunkd service | Running |
-| Sysmon64 service | Running |
-| Sysmon Operational log | Enabled |
-| Sysmon local event records | 3,919 |
-| Sysmon events returned by Splunk search | 0 |
-| End-to-end Sysmon collection in Splunk | Not verified |
+I chose a simple detection idea: **find PowerShell or Command Prompt processes in Sysmon logs**. Sysmon Event ID 1 records new processes.
 
-## 4. Issue and Limitation
+This is an example Splunk search for this idea:
 
-Sysmon recorded Windows events, but Splunk did not return the expected events. During troubleshooting, Splunk logs showed that it could not subscribe to the Sysmon Operational channel and reported `errorCode=5`. The exact remaining cause was not confirmed, and the issue was not fully resolved during this lab.
+```spl
+source="week7_windows_sysmon_sample.csv" sourcetype="csv" EventID=1
+| search (Image="*\\powershell.exe" OR Image="*\\cmd.exe" OR CommandLine="*powershell*" OR CommandLine="*cmd*")
+| table _time Computer Image CommandLine ParentImage
+```
 
-## 5. Conclusion
+I wrote this search as an example. I have not confirmed its results in Splunk. The field names may need changes for my CSV file.
 
-I checked the installation and operation of Sysmon and Splunk Enterprise. Both services were running, and Sysmon was recording local events. I also tested a Splunk search for Sysmon events, but it returned no results. The practical work was therefore **partially completed**.
+## 5. MITRE ATT&CK Mapping
 
-## 6. AI Usage Disclosure
+I connected the detection idea to two MITRE ATT&CK techniques:
 
-I used an AI assistant to understand theoretical concepts related to Sysmon, Splunk, Windows Event Logs, and possible causes of the errors. AI also helped me organize and write the report in English. I performed the practical checks myself and used my own screenshots as evidence. The unsuccessful Splunk search is reported as it happened.
+| Technique | ID | Why it is related |
+| --- | --- | --- |
+| PowerShell | T1059.001 | Attackers can use PowerShell to run commands |
+| Windows Command Shell | T1059.003 | Attackers can use `cmd.exe` to run commands |
+
+These programs are also used for normal tasks. Seeing them in logs does not mean there was an attack.
+
+## 6. Results
+
+- Sysmon and Splunk services were running during my earlier Windows check.
+- The local Sysmon log was enabled and had 3,919 records.
+- The first direct log search in Splunk showed 0 events.
+- I uploaded a sample CSV file to Splunk.
+- Splunk successfully showed **120 events**.
+- I selected a detection idea and connected it to two MITRE ATT&CK techniques.
+- I did not confirm a live Windows log connection or a detection alert.
+
+## 7. Conclusion
+
+In Week 7, I checked Sysmon logs and used Splunk Enterprise. At first, I could not see events from the Windows log directly. After that, I uploaded a sample CSV file. Splunk showed **120 events**, and I could search them. I also prepared a CAR-style detection idea and connected it to MITRE ATT&CK techniques T1059.001 and T1059.003. This lab helped me understand how a SIEM can show and search security logs.
+
+## 8. AI Usage
+
+I used AI to help me understand the theory and write this report in simple English. I did the practical work and took the Splunk screenshot myself.
