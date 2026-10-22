@@ -22,7 +22,7 @@ Both services were running. Then I checked the Sysmon log:
 Get-WinEvent -ListLog "Microsoft-Windows-Sysmon/Operational" | Select-Object LogName, RecordCount, IsEnabled
 ```
 
-The log was enabled and had **3,919 records** during my earlier check.
+The log was enabled and had **56558 records** during my earlier check.
 
 At first, Splunk showed **0 events** when I tried to search the Windows Sysmon log directly. I also found an access error (`errorCode=5`). I did not confirm that this problem was fixed.
 
