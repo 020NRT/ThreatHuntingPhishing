@@ -96,7 +96,7 @@ The search is a simple detection example based on process creation events. It is
 
 ### Screenshot — 37 Events Found
 
-Add the screenshot of the successful SPL search here.
+![CAR Detection - 37 Events](screenshots/week7.png)
 
 ## 5. MITRE ATT&CK Mapping
 
