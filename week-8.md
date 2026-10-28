@@ -43,7 +43,7 @@ I ran a small PowerShell test. It was a local demonstration, not a CALDERA opera
 
 The Windows Security log shows Event ID 4624 at **28 October 2026, 14:52:15**. The screenshot does not show the details for this event, so the account name and logon type are not confirmed. The selected event is ID 5379 at 14:52:26; it records a read from Credential Manager.
 
-![Windows Security log](Week8-Practical/evidence/01-security-log.png)
+![Windows Security log](screenshots/week8-security-log.png)
 
 ### Scheduled task
 
@@ -51,15 +51,15 @@ The task `W8-PaperTrail-Lab` was created. PowerShell showed it in state `Queued`
 
 The Task Scheduler screenshot shows the task under the `user` account. Its state is `Queued`. Task history is disabled in the screenshot. This confirms that the task was created, but it does not confirm that the task action completed.
 
-![Week 8 scheduled task](Week8-Practical/evidence/04-task-scheduler.png)
+![Scheduled task](screenshots/week8-task-scheduler.png)
 
 ### Local file transfer
 
 The PowerShell script sent the fake file `lab-note.txt` to `127.0.0.1:8765`. The receiver showed the marker `PAPER-TRAIL-W8-7Q4M` and saved the file in the user's Temp folder.
 
-![PowerShell test output](Week8-Practical/evidence/02-lab-run.png)
+![PowerShell test output](screenshots/week8-lab-run.png)
 
-![Local receiver output](Week8-Practical/evidence/03-local-transfer.png)
+![Local receiver output](screenshots/week8-local-transfer.png)
 
 This local transfer is not a real C2 transfer. It does not prove that technique T1041 was performed. No Sysmon network event or Splunk result is shown in the evidence.
 
