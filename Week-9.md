@@ -15,7 +15,9 @@ Run selected Atomic Red Team tests (T1003 and T1059.001) on a Windows lab VM and
 - **Test:** T1003-6 (Dump Credential Manager using keymgr.dll and rundll32.exe)
 - **Command:** `Invoke-AtomicTest T1003 -TestNumbers 6`
 - **Result:** Executed successfully (Exit code: 0). The Windows Credential Manager window was successfully invoked on the endpoint, proving the execution of the technique.
-- **Evidence:** `screenshots/T1003_powershell.png`
+
+**Proof of Execution (PowerShell):**
+![T1003 PowerShell Execution](screenshots/T1003_powershell.png)
 
 ### 2. T1059.001 – Command and Scripting Interpreter: PowerShell
 - **Test:** T1059.001-4 (Mimikatz - Cradlecraft PsSendKeys)
@@ -23,7 +25,9 @@ Run selected Atomic Red Team tests (T1003 and T1059.001) on a Windows lab VM and
 - **Test:** T1059.001-17 (PowerShell Command Execution)
 - **Command:** `Invoke-AtomicTest T1059.001 -TestNumbers 17`
 - **Result:** Executed successfully. The test triggered a PowerShell execution with an encoded command (`-e`), which was captured by Sysmon.
-- **Evidence:** `screenshots/T1059_powershell.png`
+
+**Proof of Execution (PowerShell):**
+![T1059 PowerShell Execution](screenshots/T1059_powershell.png)
 
 ## Splunk Analysis
 
@@ -31,13 +35,17 @@ Run selected Atomic Red Team tests (T1003 and T1059.001) on a Windows lab VM and
 - **Search used:** `index=* host="WIN-EIME9U6TU4L" EventCode=1 CommandLine="*keymgr*"`
 - **Findings:** Splunk successfully captured the execution. The logs show `powershell.exe` spawning `rundll32.exe` with the malicious arguments (`keymgr`, `KRShowKeyMgr`).
 - **Alerting:** No automated alert or correlation rule triggered in Splunk. It was only visible via manual search.
-- **Evidence:** `screenshots/T1003_splunk.png`
+
+**Splunk Search Results for T1003:**
+![T1003 Splunk Results](screenshots/T1003_splunk.png)
 
 ### T1059.001 Analysis
 - **Search used:** `index=* host="WIN-EIME9U6TU4L" EventCode=1 Image="*\\powershell.exe"`
 - **Findings:** Sysmon successfully logged the PowerShell execution. The logs reveal a suspicious command line: `powershell.exe -e JgAgAcgAZwB...` (where `-e` stands for `-EncodedCommand`). This is a common technique used by attackers to obfuscate malicious scripts.
 - **Alerting:** No automated alert triggered for the encoded PowerShell command. This is a critical detection gap, as this behavior is heavily associated with malware.
-- **Evidence:** `screenshots/T1059_splunk.png`
+
+**Splunk Search Results for T1059:**
+![T1059 Splunk Results](screenshots/T1059_splunk.png)
 
 ## Summary & Recommendations
 - **Visibility & Logging:** Sysmon is successfully forwarding EventCode 1 (Process Creation) to Splunk, capturing both parent and child processes, including full command-line arguments. There is a slight delay (approx. 10-15 minutes) in log ingestion.
@@ -60,6 +68,6 @@ I used an AI assistant (ChatGPT) to help me with this week's task. The AI helped
 - It helped me understand how to install and set up the Atomic Red Team tools when I had errors in PowerShell.
 - It helped me fix the script execution policy error.
 - It gave me ideas for Splunk search queries to find the test events.
-- It helped me write this report in clear English.
+- It helped me write this report in clear English and structure the document.
 
 I did all the practical work by myself. I ran the commands in the virtual machine, I took the screenshots, and I checked the logs in Splunk. The AI was only a helper for learning and structuring the final text.
