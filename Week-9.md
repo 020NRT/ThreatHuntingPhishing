@@ -47,15 +47,6 @@ Run selected Atomic Red Team tests (T1003 and T1059.001) on a Windows lab VM and
 **Splunk Search Results for T1059:**
 ![T1059 Splunk Results](screenshots/T1059_splunk.png)
 
-## Summary & Recommendations
-- **Visibility & Logging:** Sysmon is successfully forwarding EventCode 1 (Process Creation) to Splunk, capturing both parent and child processes, including full command-line arguments. There is a slight delay (approx. 10-15 minutes) in log ingestion.
-- **Detection Gaps:** While the events are logged, there are **no active correlation rules or alerts** in this Splunk instance to catch these specific MITRE ATT&CK techniques. An attacker could perform credential dumping (T1003) and script execution (T1059) without triggering an alert.
-- **Endpoint Protection:** Windows Defender successfully blocked the Mimikatz test (T1059.001-4), proving that the endpoint has some level of active defense.
-- **Next Steps / Recommendations:**
-  1. Create Splunk correlation rules (alerts) for `rundll32.exe` executing with DLLs like `keymgr.dll` or `comsvcs.dll`.
-  2. Create alerts for PowerShell execution with the `-EncodedCommand` (or `-e`, `-enc`) parameter.
-  3. Optimize Universal Forwarder `outputs.conf` / `inputs.conf` to reduce log ingestion delay for real-time alerting.
-
 ## References
 - Atomic Red Team Wiki & GitHub Repository
 - MITRE ATT&CK T1003: https://attack.mitre.org/techniques/T1003/
